@@ -1,48 +1,36 @@
-#include <stdio.h> // Inclusion de la bibliothèque standard d'entrée/sortie pour utiliser printf et scanf
-
-// Fonction pour supprimer les doublons dans un tableau trié
-int supprimerDoublons(int tableau[], int taille) {
-    // Si le tableau est vide ou contient un seul élément, il n'y a pas de doublon à supprimer
-    if (taille == 0 || taille == 1)
-        return taille; // Retourner la taille telle quelle
-
-    int index = 0; // Index pour marquer la position du dernier élément unique conservé
-
-    // Parcourir le tableau à partir du 2e élément (i = 1)
-    for (int i = 1; i < taille; i++) {
-        // Si l'élément courant est différent du dernier élément unique conservé
-        if (tableau[i] != tableau[index]) {
-            index++; // Avancer l'index pour ajouter un nouvel élément unique
-            tableau[index] = tableau[i]; // Copier l'élément unique à la nouvelle position
-        }
-    }
-
-    // La nouvelle taille du tableau (sans doublons) est index + 1
-    return index + 1;
-}
+#include <stdio.h> // Inclusion de la bibliothèque standard pour utiliser printf et scanf
 
 int main() {
-    int taille; // Variable pour stocker la taille du tableau
+   int nbr, i, j, k;          // Déclaration des variables entières
+   int tab[30];               // Déclaration d’un tableau de taille maximale 30
 
-    // Lecture de la taille du tableau depuis l'entrée standard
-    scanf("%d", &taille);
+   scanf("%d", &nbr);         // Lecture du nombre d’éléments à entrer dans le tableau
 
-    int tableau[taille]; // Déclaration d’un tableau de taille dynamique (C99+)
+   // Lecture des éléments du tableau
+   for (i = 0; i < nbr; i++)
+      scanf("%d", &tab[i]);
 
-    // Lecture des éléments du tableau
-    for (int i = 0; i < taille; i++) {
-        scanf("%d", &tableau[i]); // Lecture de chaque élément un par un
-    }
+   // Boucle principale pour supprimer les doublons
+   for (i = 0; i < nbr; i++) {
+      for (j = i + 1; j < nbr;) {
+         // Si un doublon est trouvé
+         if (tab[j] == tab[i]) {
+            // Décalage vers la gauche de tous les éléments suivants pour écraser le doublon
+            for (k = j; k < nbr - 1; k++) {
+               tab[k] = tab[k + 1];
+            }
+            nbr--; // Réduction de la taille logique du tableau
+            // On ne fait pas j++ ici car l'élément déplacé à l'indice j doit aussi être vérifié
+         } else
+            j++; // Si ce n’est pas un doublon, on passe à l’élément suivant
+      }
+   }
 
-    // Appel de la fonction pour supprimer les doublons (le tableau doit être trié avant !)
-    int nouvelleTaille = supprimerDoublons(tableau, taille);
+   // Affichage du tableau après suppression des doublons
+   printf("Après suppression des doublons : ");
+   for (i = 0; i < nbr; i++) {
+      printf("%d ", tab[i]); // Affichage de chaque élément unique
+   }
 
-    // Affichage du tableau après suppression des doublons
-    printf("Après suppression des doublons : ");
-    for (int i = 0; i < nouvelleTaille; i++) {
-        printf("%d ", tableau[i]); // Affichage de chaque élément unique
-    }
-    printf("\n"); // Fin de ligne après l’affichage
-
-    return 0; // Fin normale du programme
+   return 0; // Fin du programme
 }
